@@ -1,9 +1,10 @@
-// // utils/database_helper.dart
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../models/book.dart';
+import '../models/models/user.dart';
+// import '../models/user.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -45,6 +46,15 @@ class DatabaseHelper {
             rating REAL,
             isRead INTEGER,
             imageUrl TEXT
+          )
+        ''');
+
+        await db.execute('''
+          CREATE TABLE users (
+            id TEXT PRIMARY KEY,
+            username TEXT,
+            email TEXT,
+            password TEXT
           )
         ''');
       },
@@ -97,5 +107,38 @@ class DatabaseHelper {
     if (maps.isEmpty) return [];
 
     return maps.map((map) => Book.fromMap(map)).toList();
+  }
+
+  Future<int> insertUser(User user) async {
+    final db = await database;
+    return await db.insert('users', user.toMap());
+  }
+
+  Future<User?> getUser(String email, String password) async {
+    final db = await database;
+    final maps = await db.query(
+      'users',
+      where: 'email = ? AND password = ?',
+      whereArgs: [email, password],
+    );
+
+    if (maps.isNotEmpty) {
+      return User.fromMap(maps.first);
+    }
+    return null;
+  }
+
+  Future<User?> getUserByEmail(String email) async {
+    final db = await database;
+    final maps = await db.query(
+      'users',
+      where: 'email = ?',
+      whereArgs: [email],
+    );
+
+    if (maps.isNotEmpty) {
+      return User.fromMap(maps.first);
+    }
+    return null;
   }
 }
