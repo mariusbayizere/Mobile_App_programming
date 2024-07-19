@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../models/book.dart';
@@ -103,82 +104,157 @@ class _AddEditBookScreenState extends State<AddEditBookScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                initialValue: _title,
-                decoration: InputDecoration(labelText: 'Title'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _title = value!;
-                },
-              ),
-              TextFormField(
-                initialValue: _author,
-                decoration: InputDecoration(labelText: 'Author'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter an author';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _author = value!;
-                },
-              ),
-              TextFormField(
-                initialValue: _description,
-                decoration: InputDecoration(labelText: 'Description'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a description';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _description = value!;
-                },
-              ),
-              TextFormField(
-                initialValue: _rating.toString(),
-                decoration: InputDecoration(labelText: 'Rating'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a rating';
-                  }
-                  if (double.tryParse(value) == null) {
-                    return 'Please enter a valid rating';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _rating = double.parse(value!);
-                },
-              ),
-              SwitchListTile(
-                title: Text('Mark as Read'),
-                value: _isRead,
-                onChanged: (value) {
-                  setState(() {
-                    _isRead = value;
-                  });
-                },
-              ),
-              SizedBox(height: 10),
-              _imageUrl == null
-                  ? Text('No image selected.')
-                  : Image.file(File(_imageUrl!)),
-              TextButton(
-                onPressed: _pickImage,
-                child: Text('Select Image'),
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: 20),
+                TextFormField(
+                  initialValue: _title,
+                  decoration: InputDecoration(
+                    labelText: 'Title',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                      borderSide: BorderSide(
+                        color: Colors.blue,
+                        width: 1.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                      borderSide: BorderSide(
+                        color: Colors.lightBlue,
+                        width: 2.0,
+                      ),
+                    ),
+                    contentPadding: EdgeInsets.only(
+                      left: 20.0,
+                    ),
+                    // ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a title';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _title = value!;
+                  },
+                ),
+                SizedBox(height: 20),
+                TextFormField(
+                  initialValue: _author,
+                  decoration: InputDecoration(
+                    labelText: 'Author',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                      borderSide: BorderSide(
+                        color: Colors.blue,
+                        width: 1.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                      borderSide: BorderSide(
+                        color: Colors.lightBlue,
+                        width: 2.0,
+                      ),
+                    ),
+                    contentPadding: EdgeInsets.only(
+                      left: 20.0,
+                    ),
+                  ),
+                  // ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter an author';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _author = value!;
+                  },
+                ),
+                SizedBox(height: 20),
+                TextFormField(
+                  initialValue: _description,
+                  decoration: InputDecoration(
+                    labelText: 'Description',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                      borderSide: BorderSide(
+                        color: Colors.blue,
+                        width: 1.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                      borderSide: BorderSide(
+                        color: Colors.lightBlue,
+                        width: 2.0,
+                      ),
+                    ),
+                    contentPadding: EdgeInsets.only(
+                      left: 20.0,
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a description';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _description = value!;
+                  },
+                ),
+                SizedBox(height: 10),
+                Text('Rating'),
+                RatingBar.builder(
+                  initialRating: _rating,
+                  minRating: 0,
+                  direction: Axis.horizontal,
+                  allowHalfRating: true,
+                  itemCount: 5,
+                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, _) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (rating) {
+                    setState(() {
+                      _rating = rating;
+                    });
+                  },
+                ),
+                SwitchListTile(
+                  title: Text('Mark as Read'),
+                  value: _isRead,
+                  onChanged: (value) {
+                    setState(() {
+                      _isRead = value;
+                    });
+                  },
+                ),
+                SizedBox(height: 10),
+                _imageUrl == null
+                    ? Text('No image selected.')
+                    : Image.file(File(_imageUrl!)),
+                TextButton(
+                  onPressed: _pickImage,
+                  child: Text('Select Image'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

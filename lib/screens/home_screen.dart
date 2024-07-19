@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/book_service.dart';
-// import '../utils/preferences.dart';
 import '../widgets/book_list_item.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -96,22 +95,80 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      body: ListView.builder(
-        itemCount: filteredBooks.length,
-        itemBuilder: (ctx, i) => BookListItem(book: filteredBooks[i]),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '21',
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'Sun, july 2024',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Text(
+                'New Arrivals',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Container(
+              height: 200,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: filteredBooks.length,
+                itemBuilder: (ctx, i) => BookListItem(
+                  book: filteredBooks[i],
+                  isHorizontal: true,
+                ),
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Text(
+                'My Books',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: filteredBooks.length,
+              itemBuilder: (ctx, i) => BookListItem(
+                book: filteredBooks[i],
+                isHorizontal: false,
+              ),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-            child: Icon(Icons.add),
+            backgroundColor: Colors.blue,
+            child: Icon(Icons.add, color: Colors.white),
             onPressed: () {
               Navigator.pushNamed(context, '/add-edit-book');
             },
           ),
           SizedBox(height: 10),
           FloatingActionButton(
-            child: Icon(Icons.view_list),
+            backgroundColor: Colors.blue,
+            child: Icon(Icons.view_list, color: Colors.white),
             onPressed: () {
               Navigator.pushNamed(context, '/view-books');
             },

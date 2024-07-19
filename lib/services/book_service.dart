@@ -27,13 +27,13 @@ class BookService with ChangeNotifier {
     notifyListeners();
   }
 
-  void addBook(Book book) async {
+  Future<void> addBook(Book book) async {
     await DatabaseHelper().insertBook(book);
     _books.add(book);
     notifyListeners();
   }
 
-  void updateBook(Book book) async {
+  Future<void> updateBook(Book book) async {
     await DatabaseHelper().updateBook(book);
     final index = _books.indexWhere((b) => b.id == book.id);
     if (index != -1) {
@@ -42,7 +42,7 @@ class BookService with ChangeNotifier {
     }
   }
 
-  void deleteBook(String id) async {
+  Future<void> deleteBook(String id) async {
     await DatabaseHelper().deleteBook(id);
     _books.removeWhere((book) => book.id == id);
     notifyListeners();

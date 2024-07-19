@@ -1,4 +1,3 @@
-// models/book.dart
 class Book {
   final String id;
   final String title;
@@ -7,7 +6,6 @@ class Book {
   final double rating;
   final bool isRead;
   final String? imageUrl;
-
   Book({
     required this.id,
     required this.title,
@@ -39,6 +37,26 @@ class Book {
       rating: map['rating'],
       isRead: map['isRead'] == 1,
       imageUrl: map['imageUrl'],
+    );
+  }
+
+  Book copyWith({
+    String? id,
+    String? title,
+    String? author,
+    String? description,
+    double? rating,
+    bool? isRead,
+    String? imageUrl,
+  }) {
+    return Book(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      author: author ?? this.author,
+      description: description ?? this.description,
+      rating: rating ?? this.rating,
+      isRead: isRead ?? this.isRead,
+      imageUrl: imageUrl ?? this.imageUrl,
     );
   }
 }

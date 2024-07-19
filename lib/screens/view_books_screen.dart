@@ -29,6 +29,12 @@ class ViewBooksScreen extends StatelessWidget {
               );
             },
             trailing: IconButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.red, // Set the text color here
+                shape: CircleBorder(),
+                padding: EdgeInsets.all(10),
+              ),
               icon: Icon(Icons.delete),
               onPressed: () async {
                 final confirm = await showDialog(
